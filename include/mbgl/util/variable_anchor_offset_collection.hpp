@@ -13,23 +13,22 @@ namespace mbgl {
 using AnchorOffsetPair = std::pair<style::SymbolAnchorType, std::array<float, 2>>;
 
 class VariableAnchorOffsetCollection {
-    
 public:
+    static std::vector<AnchorOffsetPair> nonEmptyOffset() {
+        return std::vector<AnchorOffsetPair>{{{style::SymbolAnchorType::Left, {-5, 5}}}};
+    }
+
     VariableAnchorOffsetCollection() = default;
 
     // Copy constructor
-    VariableAnchorOffsetCollection(const VariableAnchorOffsetCollection& other) {
-        anchorOffsets = other.anchorOffsets;
-    }
+    VariableAnchorOffsetCollection(const VariableAnchorOffsetCollection& other) { anchorOffsets = other.anchorOffsets; }
 
     // Move constructor
     VariableAnchorOffsetCollection(VariableAnchorOffsetCollection&& other) noexcept {
         anchorOffsets = std::move(other.anchorOffsets);
     }
-  
-    VariableAnchorOffsetCollection(const std::vector<AnchorOffsetPair>& values) {
-        anchorOffsets = std::move(values);
-    }
+
+    VariableAnchorOffsetCollection(const std::vector<AnchorOffsetPair>& values) { anchorOffsets = std::move(values); }
 
     std::string toString() const;
     mbgl::Value serialize() const;
@@ -38,11 +37,11 @@ public:
     std::array<float, 2> getOffsetByAnchor(const style::SymbolAnchorType& anchorType) const;
 
     // Copy assignment operator
-    VariableAnchorOffsetCollection& operator=(VariableAnchorOffsetCollection& other) {
+    VariableAnchorOffsetCollection& operator=(const VariableAnchorOffsetCollection& other) {
         if (this != &other) {
             anchorOffsets = other.anchorOffsets;
         }
-      
+
         return *this;
     }
 
@@ -51,13 +50,11 @@ public:
         if (this != &other) {
             anchorOffsets = std::move(other.anchorOffsets);
         }
-      
+
         return *this;
     }
 
-    bool operator==(const VariableAnchorOffsetCollection& other) const {
-        return anchorOffsets == other.anchorOffsets;
-    }
+    bool operator==(const VariableAnchorOffsetCollection& other) const { return anchorOffsets == other.anchorOffsets; }
 
 private:
     std::vector<AnchorOffsetPair> anchorOffsets;
